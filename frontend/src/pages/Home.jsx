@@ -82,9 +82,11 @@ function MissionsWidget({ auth, tasks }) {
           className="badge-highlight position-absolute"
           style={{ top: "-10px", right: "18px" }}
         >
-          Recompensas activas
+          Evento Comunitario
         </span>
-        <h2 className="h6 fw-bold mb-1 text-dark">Misiones Ciudadanas</h2>
+        <h2 className="h6 fw-bold mb-1 text-dark">
+          Registrate para poder participar!!
+        </h2>
         <p className="small text-muted mb-3">
           Completá tareas preventivas en tu hogar o barrio para sumar puntos y
           beneficios municipales.
