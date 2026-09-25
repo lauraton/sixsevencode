@@ -1,4 +1,5 @@
 import { matchedData } from "express-validator";
+import cookieParser from "cookie-parser";
 import { comparePassword, hashPassword } from "../helpers/bcrypt.helper.js";
 import { generateToken } from "../helpers/jwt.helper.js";
 import { UserModel } from "../models/user.model.js";
