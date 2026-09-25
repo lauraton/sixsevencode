@@ -3,8 +3,8 @@ import { ProfileModel } from "../models/profile.model.js";
 
 export const createProfile = async (req, res) => {
     try {
-        const { user_id: idUser } = req.userData;
-        const datosValidos = matchedData(req, { locations: ["body"] });
+        const idUser = req.userData.user_id;
+        const datosValidos = matchedData(req, { locations: ["body"]});
 
         const yaExiste = await ProfileModel.findOne({ where: { user_id: idUser } });
         if (yaExiste) {
@@ -20,8 +20,8 @@ export const createProfile = async (req, res) => {
 
 export const getProfile = async (req, res) => {
     try {
-        const { user_id: idUser } = req.userData;
-        const profile = await ProfileModel.findOne({ where: { user_id: idUser } });
+        const idUser = req.userData.user_id;
+        const profile = await ProfileModel.findOne({ where: { user_id: idUser }});
 
         if (!profile) {
             return res.status(404).json({ message: "Perfil no encontrado" });
@@ -30,16 +30,16 @@ export const getProfile = async (req, res) => {
         return res.status(200).json(profile);
     } catch (error) {
         console.log(error);
-        return res.status(500).json({ message: "error interno del servidor" });
+        return res.status(500).json({ message: "error interno del servidor "});
     }
 };
 
 export const updateProfile = async (req, res) => {
     try {
-        const { user_id: idUser } = req.userData;
-        const datosValidos = matchedData(req, { locations: ["body"] });
-
-        const profile = await ProfileModel.findOne({ where: { user_id: idUser } });
+        const idUser = req.userData.user_id;
+        const datosValidos = matchedData(req, { locations: ["body"]});
+        
+        const profile = await ProfileModel.findOne({ where: { user_id: idUser }});
 
         if (!profile) {
             return res.status(404).json({ message: "perfil no encontrado" });

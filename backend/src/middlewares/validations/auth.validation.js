@@ -2,12 +2,12 @@ import { body } from "express-validator"
 import { UserModel } from "../../models/user.model.js"
 
 export const registerValidations = [
-    body('nombre')
+    body('name')
         .notEmpty()
         .withMessage('El nombre no debe estar vacio')
         .isLength({ min: 2, max: 50 })
         .withMessage('El nombre debe tener entre 2 y 50 caracteres'),
-    body('apellido')
+    body('lastname')
         .notEmpty()
         .withMessage('El apellido no debe estar vacio')
         .isLength({ min: 2, max: 50 })
@@ -31,7 +31,7 @@ export const registerValidations = [
         .withMessage('La contraseña debe tener un minimo de 8 caracteres.')
         .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/)
         .withMessage('La contraseña debe contener al menos una letra minuscula, una mayuscula y un numero.'),
-    body('barrio')
+    body('neighborhood')
         .optional()
         .isLength({ min: 2, max: 100 })
         .withMessage('El barrio debe tener entre 2 y 100 caracteres')
