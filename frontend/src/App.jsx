@@ -1,35 +1,33 @@
-import { useState } from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
+import { AppProvider } from "./context/AppContext.jsx";
 import AppNavbar from "./components/AppNavbar.jsx";
-import CitizenDashboard from "./pages/CitizenDashboard.jsx";
+import Home from "./pages/Home.jsx";
+import Alerts from "./pages/Alerts.jsx";
+import CitizenReports from "./pages/CitizenReports.jsx";
 import CommunityChallenge from "./pages/CommunityChallenge.jsx";
 import MunicipalSchedule from "./pages/MunicipalSchedule.jsx";
 import CommunityForum from "./pages/CommunityForum.jsx";
+import News from "./pages/News.jsx";
 import AdminDashboard from "./pages/AdminDashboard.jsx";
 
 function App() {
-  const [role, setRole] = useState("citizen");
-  const navigate = useNavigate();
-
-  const handleRoleChange = (nextRole) => {
-    setRole(nextRole);
-    navigate(nextRole === "admin" ? "/admin" : "/");
-  };
-
   return (
-    <>
-      <AppNavbar role={role} onRoleChange={handleRoleChange} />
+    <AppProvider>
+      <AppNavbar />
 
       <main className="flex-grow-1">
         <Routes>
-          <Route path="/" element={<CitizenDashboard />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/alertas" element={<Alerts />} />
+          <Route path="/reportes" element={<CitizenReports />} />
           <Route path="/retos" element={<CommunityChallenge />} />
           <Route path="/avisos" element={<MunicipalSchedule />} />
           <Route path="/foro" element={<CommunityForum />} />
+          <Route path="/noticias" element={<News />} />
           <Route path="/admin" element={<AdminDashboard />} />
         </Routes>
       </main>
-    </>
+    </AppProvider>
   );
 }
 

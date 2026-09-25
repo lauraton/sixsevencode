@@ -1,5 +1,6 @@
-import { useMemo, useState } from "react";
-import { adminSubmissions, barrios } from "../data/mockData.js";
+import { useState } from "react";
+import { barrios } from "../data/mockData.js";
+import { useApp } from "../context/AppContext.jsx";
 
 const emptyEventForm = {
   actividad: "Fumigación",
@@ -9,27 +10,20 @@ const emptyEventForm = {
   recomendaciones: "",
 };
 
-// Vista 5: Panel de Administración Municipal.
-// Validación fotográfica de tareas + creador de avisos territoriales.
+const reportStatusMeta = {
+  publicado: { label: "Publicado", className: "badge-state-pending" },
+  en_revision: { label: "En revisión", className: "badge-brand" },
+  resuelto: { label: "Resuelto", className: "badge-state-approved" },
+};
+
+// Panel Municipio: gestión de reportes ciudadanos, creación de avisos
+// territoriales y moderación del foro. Todo se lee/escribe desde el
+// contexto compartido, así lo que se publica acá aparece al instante
+// para los vecinos en /avisos y /foro.
 function AdminDashboard() {
-  const [submissions, setSubmissions] = useState(adminSubmissions);
-  const [barrioFiltro, setBarrioFiltro] = useState("todos");
+  const { reports, setReportStatus, addEvent, posts, removePost } = useApp();
   const [eventForm, setEventForm] = useState(emptyEventForm);
-  const [publishedEvents, setPublishedEvents] = useState([]);
   const [feedback, setFeedback] = useState(null);
-
-  const submissionsFiltradas = useMemo(() => {
-    if (barrioFiltro === "todos") return submissions;
-    return submissions.filter((s) => s.barrio === barrioFiltro);
-  }, [submissions, barrioFiltro]);
-
-  const pendientes = submissions.filter((s) => s.estado === "pendiente").length;
-
-  const resolverSubmission = (id, estado) => {
-    setSubmissions((prev) =>
-      prev.map((s) => (s.id === id ? { ...s, estado } : s)),
-    );
-  };
 
   const handleEventChange = (field) => (event) => {
     setEventForm((prev) => ({ ...prev, [field]: event.target.value }));
@@ -39,7 +33,7 @@ function AdminDashboard() {
     event.preventDefault();
     if (!eventForm.fecha || !eventForm.franjaHoraria) return;
 
-    setPublishedEvents((prev) => [{ ...eventForm, id: Date.now() }, ...prev]);
+    addEvent(eventForm);
     setFeedback(
       `Aviso de ${eventForm.actividad.toLowerCase()} publicado para ${eventForm.barrio}.`,
     );
@@ -49,68 +43,48 @@ function AdminDashboard() {
   return (
     <div className="container py-4 py-lg-5">
       <header className="mb-4">
-        <h1 className="h3 fw-bold mb-1">Panel de Administración Municipal</h1>
+        <h1 className="h3 fw-bold mb-1">Panel Municipio</h1>
         <p className="text-muted mb-0">
-          {pendientes} tareas esperando validación
+          Gestión de reportes, avisos territoriales y moderación del foro
         </p>
       </header>
 
       <div className="row g-4">
-        <section
-          className="col-12 col-lg-7"
-          aria-labelledby="validation-heading"
-        >
-          <div className="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
-            <h2 id="validation-heading" className="h5 fw-semibold mb-0">
-              Validación de fotos
-            </h2>
-            <select
-              className="form-select form-select-sm"
-              style={{ width: "auto" }}
-              value={barrioFiltro}
-              onChange={(event) => setBarrioFiltro(event.target.value)}
-              aria-label="Filtrar por barrio"
-            >
-              <option value="todos">Todos los barrios</option>
-              {barrios.map((barrio) => (
-                <option key={barrio} value={barrio}>
-                  {barrio}
-                </option>
-              ))}
-            </select>
-          </div>
+        <section className="col-12 col-lg-6" aria-labelledby="reports-heading">
+          <h2 id="reports-heading" className="h5 fw-bold mb-3">
+            Reportes ciudadanos
+          </h2>
 
-          {submissionsFiltradas.length === 0 ? (
+          {reports.length === 0 ? (
             <div className="empty-state">
               <i
-                className="bi bi-check2-circle fs-1 text-primary"
+                className="bi bi-file-earmark-text fs-1 text-primary"
                 aria-hidden="true"
               ></i>
-              <p className="mb-0">No hay envíos para este barrio.</p>
+              <p className="mb-0">No hay reportes cargados todavía.</p>
             </div>
           ) : (
-            <div className="row g-3">
-              {submissionsFiltradas.map((submission) => (
-                <div className="col-12 col-sm-6" key={submission.id}>
-                  <SubmissionCard
-                    submission={submission}
-                    onResolve={resolverSubmission}
-                  />
-                </div>
+            <div className="d-flex flex-column gap-3">
+              {reports.map((report) => (
+                <ReportCard
+                  key={report.id}
+                  report={report}
+                  onChangeStatus={setReportStatus}
+                />
               ))}
             </div>
           )}
         </section>
 
-        <section className="col-12 col-lg-5" aria-labelledby="schedule-heading">
-          <h2 id="schedule-heading" className="h5 fw-semibold mb-3">
+        <section className="col-12 col-lg-6" aria-labelledby="schedule-heading">
+          <h2 id="schedule-heading" className="h5 fw-bold mb-3">
             Programar aviso territorial
           </h2>
 
-          <div className="card shadow-sm">
+          <div className="card">
             <div className="card-body">
               {feedback && (
-                <div className="alert alert-success py-2 small" role="status">
+                <div className="alert-brand p-2 small mb-3">
                   <i className="bi bi-check-circle me-1" aria-hidden="true"></i>
                   {feedback}
                 </div>
@@ -206,7 +180,7 @@ function AdminDashboard() {
                     onChange={handleEventChange("recomendaciones")}
                   ></textarea>
                 </div>
-                <button type="submit" className="btn btn-primary">
+                <button type="submit" className="btn btn-brand">
                   <i className="bi bi-megaphone me-1" aria-hidden="true"></i>
                   Publicar aviso
                 </button>
@@ -214,20 +188,36 @@ function AdminDashboard() {
             </div>
           </div>
 
-          {publishedEvents.length > 0 && (
-            <div className="mt-3">
-              <h3 className="h6 fw-semibold">
-                Avisos publicados en esta sesión
-              </h3>
-              <ul className="list-group">
-                {publishedEvents.map((evento) => (
-                  <li className="list-group-item small" key={evento.id}>
-                    <strong>{evento.actividad}</strong> · {evento.barrio} ·{" "}
-                    {evento.fecha} · {evento.franjaHoraria}
-                  </li>
-                ))}
-              </ul>
+          <h2 className="h5 fw-bold mb-3 mt-4">Moderación del foro</h2>
+          {posts.length === 0 ? (
+            <div className="empty-state">
+              <i
+                className="bi bi-people fs-1 text-primary"
+                aria-hidden="true"
+              ></i>
+              <p className="mb-0">No hay publicaciones en el foro todavía.</p>
             </div>
+          ) : (
+            <ul className="list-group">
+              {posts.map((post) => (
+                <li
+                  key={post.id}
+                  className="list-group-item bg-transparent d-flex justify-content-between align-items-center gap-2"
+                >
+                  <span className="small">
+                    <strong>{post.autor}:</strong> {post.titulo}
+                  </span>
+                  <button
+                    type="button"
+                    className="btn btn-brand-dark btn-sm flex-shrink-0"
+                    onClick={() => removePost(post.id)}
+                  >
+                    <i className="bi bi-trash3 me-1" aria-hidden="true"></i>
+                    Eliminar
+                  </button>
+                </li>
+              ))}
+            </ul>
           )}
         </section>
       </div>
@@ -235,56 +225,46 @@ function AdminDashboard() {
   );
 }
 
-const submissionStatusMeta = {
-  pendiente: { label: "Pendiente", className: "badge-pendiente" },
-  aprobado: { label: "Aprobado", className: "badge-aprobado" },
-  rechazado: { label: "Rechazado", className: "badge-rechazado" },
-};
-
-function SubmissionCard({ submission, onResolve }) {
-  const meta = submissionStatusMeta[submission.estado];
+function ReportCard({ report, onChangeStatus }) {
+  const meta = reportStatusMeta[report.estado] ?? reportStatusMeta.publicado;
 
   return (
-    <div className="card h-100 shadow-sm">
-      <div
-        className="d-flex align-items-center justify-content-center"
-        style={{ height: "140px", background: "var(--color-bg-light)" }}
-      >
-        <i className="bi bi-image fs-1 text-primary" aria-hidden="true"></i>
-      </div>
+    <div className="card">
+      {report.fotoPreview && (
+        <img
+          src={report.fotoPreview}
+          alt={`Foto del reporte: ${report.titulo}`}
+          style={{ height: "140px", objectFit: "cover" }}
+          className="rounded-top"
+        />
+      )}
       <div className="card-body">
         <div className="d-flex justify-content-between align-items-start mb-2">
-          <span className="fw-semibold small">{submission.barrio}</span>
+          <span className="badge badge-brand">{report.tipo}</span>
           <span className={`badge ${meta.className}`}>{meta.label}</span>
         </div>
-        <p className="small mb-1">{submission.tarea}</p>
+        <h3 className="h6 fw-semibold mb-1">{report.titulo}</h3>
         <p className="small text-muted mb-2">
-          {submission.vecino} · {submission.fecha}
+          {report.barrio} · {report.autor} · {report.fecha}
         </p>
-        <p className="small text-muted fst-italic mb-3">
-          {submission.fotoDescripcion}
-        </p>
+        <p className="small mb-3">{report.descripcion}</p>
 
-        {submission.estado === "pendiente" && (
-          <div className="d-flex gap-2">
-            <button
-              type="button"
-              className="btn btn-sm btn-success flex-grow-1"
-              onClick={() => onResolve(submission.id, "aprobado")}
-            >
-              <i className="bi bi-check-lg me-1" aria-hidden="true"></i>
-              Aprobar
-            </button>
-            <button
-              type="button"
-              className="btn btn-sm btn-outline-danger flex-grow-1"
-              onClick={() => onResolve(submission.id, "rechazado")}
-            >
-              <i className="bi bi-x-lg me-1" aria-hidden="true"></i>
-              Rechazar
-            </button>
-          </div>
-        )}
+        <div className="d-flex gap-2">
+          <button
+            type="button"
+            className="btn btn-brand-outline btn-sm flex-grow-1"
+            onClick={() => onChangeStatus(report.id, "en_revision")}
+          >
+            En revisión
+          </button>
+          <button
+            type="button"
+            className="btn btn-brand btn-sm flex-grow-1"
+            onClick={() => onChangeStatus(report.id, "resuelto")}
+          >
+            Marcar resuelto
+          </button>
+        </div>
       </div>
     </div>
   );

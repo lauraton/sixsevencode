@@ -1,25 +1,42 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+
 :root {
   --color-primary: #00b5b8;
   --color-primary-rgb: 0, 181, 184;
   --color-primary-hover: #008a8c;
+  --color-primary-dark: #006e70;
   --color-secondary: #ffffff;
   --color-text: #1e293b;
   --color-bg-light: #e6f7f8;
   --color-border: #cdeef0;
 
+  --glass-bg: rgba(255, 255, 255, 0.22);
+  --glass-bg-strong: rgba(255, 255, 255, 0.55);
+  --glass-bg-primary: rgba(0, 181, 184, 0.16);
+  --glass-border: rgba(255, 255, 255, 0.45);
+  --glass-blur: 18px;
+  --shadow-glass: 0 8px 32px rgba(0, 90, 92, 0.16);
+
   color-scheme: light;
   color: var(--color-text);
-  background: var(--color-bg-light);
-  font-family: system-ui, "Segoe UI", Roboto, sans-serif;
+  font-family: "Inter", system-ui, "Segoe UI", Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 body {
   margin: 0;
-  background: var(--color-bg-light);
   color: var(--color-text);
-  padding-bottom: 76px;
+  background:
+    radial-gradient(circle at 15% 0%, rgba(0, 181, 184, 0.25), transparent 45%),
+    radial-gradient(
+      circle at 90% 10%,
+      rgba(0, 181, 184, 0.18),
+      transparent 40%
+    ),
+    linear-gradient(160deg, #eafcfd 0%, #cdf1f2 45%, #8fdfe2 100%);
+  background-attachment: fixed;
+  min-height: 100svh;
 }
 
 #root {
@@ -32,24 +49,170 @@ a {
   color: var(--color-primary);
 }
 
-/* Bootstrap color overrides to match brand palette */
-.btn-primary {
-  --bs-btn-bg: var(--color-primary);
-  --bs-btn-border-color: var(--color-primary);
-  --bs-btn-hover-bg: var(--color-primary-hover);
-  --bs-btn-hover-border-color: var(--color-primary-hover);
-  --bs-btn-active-bg: var(--color-primary-hover);
-  --bs-btn-active-border-color: var(--color-primary-hover);
-  --bs-btn-focus-shadow-rgb: var(--color-primary-rgb);
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Inter", system-ui, sans-serif;
+  font-weight: 700;
 }
 
-.btn-outline-primary {
-  --bs-btn-color: var(--color-primary);
-  --bs-btn-border-color: var(--color-primary);
-  --bs-btn-hover-bg: var(--color-primary);
-  --bs-btn-hover-border-color: var(--color-primary);
-  --bs-btn-active-bg: var(--color-primary-hover);
-  --bs-btn-active-border-color: var(--color-primary-hover);
+/* ---------- Glassmorphism ---------- */
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  box-shadow: var(--shadow-glass);
+}
+
+.glass-panel-strong {
+  background: var(--glass-bg-strong);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-glass);
+}
+
+.card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  border-radius: 18px;
+  box-shadow: var(--shadow-glass);
+}
+
+.modal-content {
+  background: var(--glass-bg-strong);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+}
+
+.dropdown-menu {
+  background: var(--glass-bg-strong);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  box-shadow: var(--shadow-glass);
+}
+
+.offcanvas {
+  background: var(--glass-bg-strong);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border-right: 1px solid var(--glass-border);
+}
+
+/* ---------- Botones de marca (sin colores default de Bootstrap) ---------- */
+.btn-brand {
+  background: var(--color-primary);
+  border: 1px solid var(--color-primary);
+  color: #fff;
+  border-radius: 999px;
+  font-weight: 600;
+  transition:
+    background-color 0.2s,
+    border-color 0.2s,
+    transform 0.15s;
+}
+.btn-brand:hover,
+.btn-brand:focus {
+  background: var(--color-primary-hover);
+  border-color: var(--color-primary-hover);
+  color: #fff;
+}
+
+.btn-brand-outline {
+  background: transparent;
+  border: 1.5px solid var(--color-primary);
+  color: var(--color-primary);
+  border-radius: 999px;
+  font-weight: 600;
+}
+.btn-brand-outline:hover,
+.btn-brand-outline:focus {
+  background: var(--glass-bg-primary);
+  color: var(--color-primary-dark);
+  border-color: var(--color-primary);
+}
+
+.btn-brand-dark {
+  background: var(--color-primary-dark);
+  border: 1px solid var(--color-primary-dark);
+  color: #fff;
+  border-radius: 999px;
+  font-weight: 600;
+}
+.btn-brand-dark:hover,
+.btn-brand-dark:focus {
+  background: #005355;
+  border-color: #005355;
+  color: #fff;
+}
+
+.btn-brand-ghost {
+  background: #ffffff;
+  border: none;
+  color: var(--color-text);
+  border-radius: 999px;
+  font-weight: 700;
+  box-shadow: 0 6px 18px rgba(0, 40, 41, 0.18);
+}
+.btn-brand-ghost:hover,
+.btn-brand-ghost:focus {
+  background: #f2fefe;
+  color: var(--color-text);
+}
+
+/* ---------- Badges de estado (sin verde/rojo/naranja/gris) ---------- */
+.badge-state-pending {
+  background: transparent;
+  border: 1px solid var(--color-primary);
+  color: var(--color-primary-dark);
+  font-weight: 600;
+}
+.badge-state-approved {
+  background: var(--color-primary);
+  color: #fff;
+  font-weight: 600;
+}
+.badge-state-rejected {
+  background: var(--color-primary-dark);
+  color: #fff;
+  font-weight: 600;
+}
+.badge-state-draft {
+  background: rgba(30, 41, 59, 0.08);
+  color: var(--color-text);
+  border: 1px dashed var(--color-border);
+  font-weight: 600;
+}
+.badge-brand {
+  background: var(--glass-bg-primary);
+  color: var(--color-primary-dark);
+  border: 1px solid var(--color-primary);
+  font-weight: 600;
+}
+
+/* ---------- Alertas de marca ---------- */
+.alert-brand {
+  background: var(--glass-bg-primary);
+  border: 1px solid var(--color-primary);
+  color: var(--color-text);
+  border-radius: 14px;
+}
+.alert-brand-dark {
+  background: rgba(0, 110, 112, 0.12);
+  border: 1px solid var(--color-primary-dark);
+  color: var(--color-text);
+  border-radius: 14px;
 }
 
 .text-primary {
@@ -60,8 +223,8 @@ a {
   background-color: var(--color-primary) !important;
 }
 
-.bg-light-brand {
-  background-color: var(--color-bg-light) !important;
+.progress {
+  background-color: rgba(255, 255, 255, 0.4);
 }
 
 .progress-bar {
@@ -70,19 +233,21 @@ a {
 
 .nav-link.active,
 .navbar .nav-link.active {
-  color: var(--color-primary) !important;
-  font-weight: 600;
+  color: var(--color-primary-dark) !important;
+  font-weight: 700;
 }
 
-.card {
-  border: 1px solid var(--color-border);
-  border-radius: 14px;
+.form-control,
+.form-select {
+  background-color: rgba(255, 255, 255, 0.6);
+  border: 1px solid var(--glass-border);
 }
 
 .form-control:focus,
 .form-select:focus {
   border-color: var(--color-primary);
   box-shadow: 0 0 0 0.2rem rgba(var(--color-primary-rgb), 0.25);
+  background-color: rgba(255, 255, 255, 0.85);
 }
 
 .form-check-input:checked {
@@ -90,70 +255,38 @@ a {
   border-color: var(--color-primary);
 }
 
-.badge-pendiente {
-  background-color: #f0ad4e;
-  color: #1e293b;
-}
-
-.badge-aprobado {
-  background-color: #2fb380;
-  color: #ffffff;
-}
-
-.badge-rechazado {
-  background-color: #e0555a;
-  color: #ffffff;
-}
-
-.bottom-nav {
-  position: fixed;
-  inset-inline: 0;
-  bottom: 0;
-  background: var(--color-secondary);
-  border-top: 1px solid var(--color-border);
-  display: flex;
-  z-index: 1030;
-}
-
-.bottom-nav .nav-link {
-  flex: 1;
-  text-align: center;
-  color: var(--color-text);
-  font-size: 0.72rem;
-  padding: 8px 2px 6px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-}
-
-.bottom-nav .nav-link i {
-  font-size: 1.15rem;
-}
-
-.bottom-nav .nav-link.active {
-  color: var(--color-primary) !important;
-}
-
 .empty-state {
   text-align: center;
   padding: 40px 16px;
-  color: #64748b;
+  color: #476065;
 }
 
-.spinner-brand {
-  color: var(--color-primary);
+.brand-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 800;
+  font-size: 1.35rem;
+  letter-spacing: -0.02em;
+  color: #fff;
+  text-decoration: none;
 }
 
-.role-switch .btn {
-  font-size: 0.8rem;
+.like-btn {
+  background: none;
+  border: none;
+  color: var(--color-text);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+}
+.like-btn.liked {
+  color: var(--color-primary-dark);
 }
 
-@media (min-width: 992px) {
+@media (max-width: 991.98px) {
   body {
     padding-bottom: 0;
-  }
-  .bottom-nav {
-    display: none;
   }
 }
