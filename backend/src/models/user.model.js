@@ -2,11 +2,11 @@ import { DataTypes } from "sequelize"
 import { sequelize } from "../config/database.js"
 
 export const UserModel = sequelize.define("User", {
-    nombre: {
+    name: {
         type: DataTypes.STRING(50),
         allowNull: false
     },
-    apellido: {
+    lastname: {
         type: DataTypes.STRING(50),
         allowNull: false
     },
@@ -19,12 +19,12 @@ export const UserModel = sequelize.define("User", {
         type: DataTypes.STRING(255),
         allowNull: false
     },
-    rol: {
+    role: {
         type: DataTypes.ENUM('CIUDADANO', 'MUNICIPIO', 'ADMIN'),
         allowNull: false,
         defaultValue: "CIUDADANO"
     },
-    barrio: {
+    neighborhood: {
         type: DataTypes.STRING(100),
         allowNull: true
     }

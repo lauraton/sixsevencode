@@ -4,17 +4,17 @@ import { hashPassword } from "../helpers/bcrypt.helper.js"
 
 export const createUser = async (req, res) => {
     try {
-        const { nombre, apellido, email, password, rol, barrio } = matchedData(req, { locations: ['body'] })
+        const { name, lastname, email, password, role, neighbourhood } = matchedData(req, { locations: ['body'] })
 
         const hashedPassword = await hashPassword(password)
 
         await UserModel.create({
-            nombre,
-            apellido,
+            name,
+            lastname,
             email,
             password: hashedPassword,
-            rol,
-            barrio
+            role,
+            neighbourhood
         })
 
         return res.status(201).json({ message: 'Se creo el usuario correctamente' })

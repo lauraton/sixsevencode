@@ -11,12 +11,12 @@ export const register = async (req, res) => {
 
         // Todo el que se registra solo es CIUDADANO (los otros roles los crea un ADMIN)
         await UserModel.create({
-            nombre,
-            apellido,
+            name,
+            lastname,
             email,
             password: hashedPassword,
-            rol: 'CIUDADANO',
-            barrio
+            role: 'CIUDADANO',
+            neighborhood
         })
 
         return res.status(201).json({ message: 'Se registro correctamente' })
@@ -45,7 +45,7 @@ export const login = async (req, res) => {
         const token = generateToken({
             user_id: userExist.id,
             email: userExist.email,
-            rol: userExist.rol
+            role: userExist.role
         })
 
         // Enviamos el token en una cookie
