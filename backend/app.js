@@ -8,14 +8,14 @@ import { authRoutes } from "./src/routes/auth.route.js"
 const port = 6767;
 const app = express();
 
+app.use(express.json());
+app.use(cookieParser());
+app.use(userRoutes)
+app.use(authRoutes)
+app.use("/api", profileRouter);
 
 app.listen(port, async () => {
     await startDB();
     console.log("Servidor ejecutándose en el puerto",port)
 })
 
-app.use(express.json());
-app.use(cookieParser());
-app.use(userRoutes)
-app.use(authRoutes)
-app.use("/api", profileRouter);
