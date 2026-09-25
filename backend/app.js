@@ -4,6 +4,7 @@ import { startDB } from "./src/config/database.js";
 import { userRoutes } from "./src/routes/user.route.js";
 import { profileRouter } from "./src/routes/profile.route.js"
 import { authRoutes } from "./src/routes/auth.route.js"
+import { barrioRoutes } from "./src/routes/neighborhood.route.js";
 
 const port = 6767;
 const app = express();
@@ -12,6 +13,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(userRoutes)
 app.use(authRoutes)
+app.use(barrioRoutes)
 app.use("/api", profileRouter);
 
 app.listen(port, async () => {
