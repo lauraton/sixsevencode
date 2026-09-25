@@ -1,4 +1,5 @@
 import { matchedData } from "express-validator";
+import cookieParser from "cookie-parser";
 import { comparePassword, hashPassword } from "../helpers/bcrypt.helper.js";
 import { generateToken } from "../helpers/jwt.helper.js";
 import { UserModel } from "../models/user.model.js";
@@ -43,10 +44,10 @@ export const login = async (req, res) => {
         }
 
         const token = generateToken({
-            user_id: userExist.id,
-            email: userExist.email,
-            role: userExist.role
-        })
+    user_id: userExist.id,
+    email: userExist.email,
+    rol: userExist.role   // ✅ leer el campo real del modelo
+})
 
         // Enviamos el token en una cookie
         res.cookie("token", token, {
