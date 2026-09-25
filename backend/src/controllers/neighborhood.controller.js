@@ -1,4 +1,4 @@
-import { NeighborhoodModel } from "../models/barrio.model.js"
+import { NeighborhoodModel } from "../models/neighborhood.model.js"
 
 // Devuelve todos los barrios ordenados alfabéticamente (para el <select> del registro)
 export const getAllNeighborhood = async (req, res) => {
