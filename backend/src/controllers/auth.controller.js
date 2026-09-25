@@ -5,7 +5,7 @@ import { UserModel } from "../models/user.model.js";
 
 export const register = async (req, res) => {
     try {
-        const { name, lastname, email, password, neighborhood } = matchedData(req, { locations: ['body'] })
+        const { name, lastname, email, password, barrio_id } = matchedData(req, { locations: ['body'] })
 
         const hashedPassword = await hashPassword(password)
 
@@ -16,7 +16,7 @@ export const register = async (req, res) => {
             email,
             password: hashedPassword,
             role: 'CIUDADANO',
-            neighborhood
+            barrio_id
         })
 
         return res.status(201).json({ message: 'Se registro correctamente' })

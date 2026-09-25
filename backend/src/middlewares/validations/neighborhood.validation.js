@@ -2,7 +2,7 @@ import { body } from "express-validator"
 import { NeighborhoodModel } from "../../models/neighborhood.model.js"
 
 // Regla reutilizable para validar el barrio elegido
-export const barrioIdValidation = (opcional = false) => {
+export function barrioIdValidation(opcional = false) {
     let regla = body('barrio_id')
 
     if (opcional) {
@@ -14,7 +14,7 @@ export const barrioIdValidation = (opcional = false) => {
     return regla
         .isInt()
         .withMessage('El barrio debe ser un ID numerico')
-        .bail() // si no es un numero, no seguimos validando
+        .bail()
         .custom(async (barrio_id) => {
             const existBarrio = await NeighborhoodModel.findByPk(barrio_id)
             if (!existBarrio) {

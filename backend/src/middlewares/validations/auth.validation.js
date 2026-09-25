@@ -1,5 +1,6 @@
 import { body } from "express-validator"
 import { UserModel } from "../../models/user.model.js"
+import { barrioIdValidation } from "./neighborhood.validation.js"
 
 export const registerValidations = [
     body('name')
@@ -31,10 +32,7 @@ export const registerValidations = [
         .withMessage('La contraseña debe tener un minimo de 8 caracteres.')
         .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/)
         .withMessage('La contraseña debe contener al menos una letra minuscula, una mayuscula y un numero.'),
-    body('neighborhood')
-        .optional()
-        .isLength({ min: 2, max: 100 })
-        .withMessage('El barrio debe tener entre 2 y 100 caracteres')
+    barrioIdValidation()
 ]
 
 export const loginValidations = [

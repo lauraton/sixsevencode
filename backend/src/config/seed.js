@@ -2,7 +2,7 @@ import { NeighborhoodModel } from "../models/neighborhood.model.js"
 import { NEIGHBORHOOD } from "../data/neighborhood.data.js"
 
 // Carga los barrios en la base de datos si todavía no están
-export const seedBarrios = async () => {
+export const seedNeighborhoods = async () => {
     try {
         const cantidad = await NeighborhoodModel.count()
 

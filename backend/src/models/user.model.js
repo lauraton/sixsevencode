@@ -1,5 +1,6 @@
 import { DataTypes } from "sequelize"
 import { sequelize } from "../config/database.js"
+import { NeighborhoodModel } from "./neighborhood.model.js"
 
 export const UserModel = sequelize.define("User", {
     name: {
@@ -27,7 +28,18 @@ export const UserModel = sequelize.define("User", {
     neighborhood: {
         type: DataTypes.STRING(100),
         allowNull: true
+    },
+        neighborhood_id: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        references: {
+            model: "Barrios",
+            key: "id"
+        }
     }
 }, {
     paranoid: true
 })
+
+UserModel.belongsTo(NeighborhoodModel, { foreignKey: "barrio_id", as: "barrio" })
+NeighborhoodModel.hasMany(UserModel, { foreignKey: "barrio_id", as: "usuarios" })

@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { getAllBarrios } from "../controllers/neighborhood.controller.js";
+import { getAllNeighborhood } from "../controllers/neighborhood.controller.js";
 
 export const barrioRoutes = Router();
 
-barrioRoutes.get('/api/barrios', getAllBarrios)
+barrioRoutes.get('/api/barrios', getAllNeighborhood)

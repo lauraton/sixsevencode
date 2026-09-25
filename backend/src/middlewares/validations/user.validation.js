@@ -1,5 +1,6 @@
 import { body, param } from "express-validator";
 import { UserModel } from "../../models/user.model.js";
+import { barrioIdValidation } from "./neighborhood.validation.js"
 
 export const createUserValidations = [
     body('name')
@@ -74,10 +75,7 @@ export const updateUserValidations = [
         .optional()
         .isIn(['CIUDADANO', 'MUNICIPIO', 'ADMIN'])
         .withMessage("El rol debe ser 'CIUDADANO', 'MUNICIPIO' o 'ADMIN'"),
-    body('neighborhood')
-        .optional()
-        .isLength({ min: 2, max: 100 })
-        .withMessage('El barrio debe tener entre 2 y 100 caracteres')
+    barrioIdValidation(true)
 ]
 
 export const idUserValidations = [
