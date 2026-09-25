@@ -5,7 +5,7 @@ import {
   notificationSettingsDefault,
 } from "../data/mockData.js";
 
-// Mi Ciudad > Alertas: alerta climática, información de enfermedades y notificaciones.
+// Mi Ciudad > Alertas: alerta climática, guía médica de enfermedades y notificaciones.
 function Alerts() {
   const [notifications, setNotifications] = useState(
     notificationSettingsDefault,
@@ -23,7 +23,7 @@ function Alerts() {
       <header className="mb-4">
         <h1 className="h3 fw-bold mb-1">Alertas</h1>
         <p className="text-muted mb-0">
-          Clima, prevención y notificaciones de tu zona
+          Clima, guía de prevención y notificaciones de tu zona
         </p>
       </header>
 
@@ -31,7 +31,7 @@ function Alerts() {
 
       <section className="mt-4" aria-labelledby="info-heading">
         <h2 id="info-heading" className="h5 fw-bold mb-3">
-          ¿Qué es y cómo se transmite?
+          Guía de Prevención
         </h2>
 
         <div className="d-flex gap-2 flex-wrap mb-3">
@@ -52,26 +52,11 @@ function Alerts() {
           ))}
         </div>
 
-        {currentDisease && (
-          <div className="card">
-            <div className="card-body">
-              <div className="d-flex align-items-center gap-2 mb-2">
-                <i
-                  className={`bi ${currentDisease.icono} fs-3 text-primary`}
-                  aria-hidden="true"
-                ></i>
-                <h3 className="h5 mb-0">{currentDisease.nombre}</h3>
-              </div>
-              <p className="mb-3">{currentDisease.descripcion}</p>
-              <h4 className="h6 fw-semibold">Síntomas frecuentes</h4>
-              <ul className="mb-0">
-                {currentDisease.sintomas.map((sintoma) => (
-                  <li key={sintoma}>{sintoma}</li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        )}
+        {currentDisease && <DiseaseGuideCard disease={currentDisease} />}
+
+        <div className="mt-4">
+          <ComparisonTable diseases={diseaseInfo} />
+        </div>
       </section>
 
       <section className="mt-4" aria-labelledby="notif-heading">
@@ -110,6 +95,130 @@ function Alerts() {
           </div>
         </div>
       </section>
+    </div>
+  );
+}
+
+// Renderiza items tipo "Etiqueta: descripción" resaltando la etiqueta en negrita.
+function BulletList({ items }) {
+  return (
+    <ul className="mb-0 ps-3">
+      {items.map((item) => {
+        const separatorIndex = item.indexOf(": ");
+        const hasLabel = separatorIndex > -1 && separatorIndex < 40;
+        return (
+          <li key={item} className="mb-1">
+            {hasLabel ? (
+              <>
+                <strong>{item.slice(0, separatorIndex)}:</strong>
+                {item.slice(separatorIndex + 1)}
+              </>
+            ) : (
+              item
+            )}
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
+
+function DiseaseGuideCard({ disease }) {
+  return (
+    <div className="card">
+      <div className="card-body">
+        <div className="d-flex align-items-center gap-2 mb-3">
+          <i
+            className={`bi ${disease.icono} fs-3 text-primary`}
+            aria-hidden="true"
+          ></i>
+          <h3 className="h5 mb-0">{disease.nombre}</h3>
+        </div>
+
+        <GuideSection title="¿Qué es?">
+          <p className="mb-0">{disease.queEs}</p>
+        </GuideSection>
+
+        <GuideSection title="¿Cómo se contagia?">
+          {disease.contagio.length > 1 ? (
+            <BulletList items={disease.contagio} />
+          ) : (
+            <p className="mb-0">{disease.contagio[0]}</p>
+          )}
+        </GuideSection>
+
+        <GuideSection title="Síntomas">
+          {disease.sintomasIntro && (
+            <p className="text-muted small mb-2">{disease.sintomasIntro}</p>
+          )}
+          {disease.sintomas.map((grupo, index) => (
+            <div key={grupo.titulo ?? `grupo-${index}`} className="mb-2">
+              {grupo.titulo && (
+                <p className="fw-semibold small mb-1">{grupo.titulo}</p>
+              )}
+              <BulletList items={grupo.items} />
+            </div>
+          ))}
+        </GuideSection>
+
+        <GuideSection title="Prevención">
+          <BulletList items={disease.prevencion} />
+        </GuideSection>
+
+        <GuideSection title="¿Qué hacer si se padece la enfermedad?" last>
+          <BulletList items={disease.queHacer} />
+        </GuideSection>
+      </div>
+    </div>
+  );
+}
+
+function GuideSection({ title, children, last }) {
+  return (
+    <div
+      className={last ? "mb-0" : "mb-3 pb-3 border-bottom"}
+      style={{ borderColor: "var(--color-border)" }}
+    >
+      <h4 className="h6 fw-bold text-primary mb-2">{title}</h4>
+      {children}
+    </div>
+  );
+}
+
+function ComparisonTable({ diseases }) {
+  return (
+    <div className="card">
+      <div className="card-body">
+        <h3 className="h6 fw-bold mb-3">Comparativa rápida</h3>
+        <div className="table-responsive">
+          <table className="table table-sm align-middle mb-0">
+            <thead>
+              <tr>
+                <th scope="col">Enfermedad</th>
+                <th scope="col">Agente causal</th>
+                <th scope="col">Vector principal</th>
+                <th scope="col">Síntoma distintivo</th>
+              </tr>
+            </thead>
+            <tbody>
+              {diseases.map((disease) => (
+                <tr key={disease.id}>
+                  <td className="fw-semibold">
+                    <i
+                      className={`bi ${disease.icono} text-primary me-1`}
+                      aria-hidden="true"
+                    ></i>
+                    {disease.nombre}
+                  </td>
+                  <td>{disease.agenteCausal}</td>
+                  <td>{disease.vectorPrincipal}</td>
+                  <td>{disease.sintomaDistintivo}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
 }

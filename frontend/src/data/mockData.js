@@ -11,19 +11,58 @@ export const barrios = [
   "República Argentina",
 ];
 
+// Ficha médica completa por enfermedad, basada en fuente epidemiológica
+// provista por el municipio. Estructura fija: qué es, cómo se contagia,
+// síntomas, prevención y qué hacer si se padece la enfermedad.
 export const diseaseInfo = [
   {
     id: "dengue",
     nombre: "Dengue",
     color: "#00b5b8",
     icono: "bi-droplet-half",
-    descripcion:
-      "Enfermedad viral transmitida por la picadura del mosquito Aedes aegypti, que se cría en agua acumulada.",
+    agenteCausal: "Virus del dengue (familia Flaviviridae, 4 serotipos)",
+    vectorPrincipal: "Aedes aegypti",
+    sintomaDistintivo:
+      'Dolor retroocular y muscular intenso ("fiebre quebrantahuesos")',
+    queEs:
+      "Enfermedad febril aguda causada por el virus del dengue (familia Flaviviridae). Existen 4 serotipos (DENV-1, DENV-2, DENV-3, DENV-4). La infección por un serotipo da inmunidad de por vida contra ese tipo en específico, pero las infecciones posteriores por otros serotipos aumentan el riesgo de desarrollar dengue grave.",
+    contagio: [
+      "A través de la picadura de hembras infectadas del mosquito Aedes aegypti (y en menor medida Aedes albopictus). No se transmite directamente de persona a persona.",
+    ],
+    sintomasIntro: null,
     sintomas: [
-      "Fiebre alta súbita",
-      "Dolor detrás de los ojos",
-      "Dolor muscular y articular",
-      "Manchas en la piel",
+      {
+        titulo: "Fase febril (3-7 días)",
+        items: [
+          "Fiebre alta repentina (39-40°C)",
+          "Dolor de cabeza intenso",
+          "Dolor retroocular (detrás de los ojos)",
+          'Dolores musculares y articulares severos ("fiebre quebrantahuesos")',
+          "Náuseas y vómitos",
+          "Erupción cutánea",
+        ],
+      },
+      {
+        titulo: "Signos de alarma (Dengue Grave)",
+        items: [
+          "Dolor abdominal intenso y continuo",
+          "Vómitos persistentes",
+          "Sangrado de mucosas (encías, nariz)",
+          "Acumulación de líquidos",
+          "Letargo o irritabilidad",
+        ],
+      },
+    ],
+    prevencion: [
+      "Control del vector: descacharrado (eliminar o dar vuelta recipientes que acumulen agua limpia dentro y fuera del hogar).",
+      "Protección personal: uso de repelente (con DEET, Icaridina o IR3535), colocación de mosquiteros en puertas y ventanas, ropa de manga larga.",
+      "Vacunación: disponibilidad de vacunas (como QDenga) según criterio médico y zona epidemiológica.",
+    ],
+    queHacer: [
+      "Atención médica: consultar inmediatamente a un centro de salud ante el inicio de síntomas.",
+      "Reposo e hidratación: reposo absoluto y beber abundantes líquidos (sales de rehidratación oral, agua).",
+      "Manejo de la fiebre: usar únicamente paracetamol según indicación médica.",
+      "Evitar estrictamente: aspirina, ibuprofeno, diclofenac o naproxeno, ya que inhiben las plaquetas y aumentan el riesgo de hemorragias.",
     ],
   },
   {
@@ -31,13 +70,40 @@ export const diseaseInfo = [
     nombre: "Zika",
     color: "#00b5b8",
     icono: "bi-shield-exclamation",
-    descripcion:
-      "Transmitido por el mismo mosquito que el dengue, suele ser más leve pero riesgoso en el embarazo.",
+    agenteCausal: "Virus del Zika (Flaviviridae)",
+    vectorPrincipal: "Aedes aegypti (además de vía sexual y perinatal)",
+    sintomaDistintivo: "Conjuntivitis no purulenta (ojos rojos sin secreción)",
+    queEs:
+      "Enfermedad vírica provocada por el virus del Zika (también un Flavivirus). En la mayoría de los casos es leve o asintomática, pero representa un grave riesgo en mujeres embarazadas por la relación directa con microcefalia y malformaciones congénitas en el feto, además de desencadenar el síndrome de Guillain-Barré.",
+    contagio: [
+      "Picadura de mosquito: principalmente Aedes aegypti.",
+      "Vía sexual: se transmite por contacto sexual sin protección con una persona infectada (el virus permanece en el semen por semanas o meses).",
+      "Transmisión perinatal: de madre a hijo durante el embarazo o el parto.",
+      "Transfusión sanguínea: riesgo menor pero documentado.",
+    ],
+    sintomasIntro:
+      "Aparecen entre 3 y 14 días tras la picadura y duran de 2 a 7 días. Con frecuencia es asintomático (80% de los casos).",
     sintomas: [
-      "Erupción en la piel",
-      "Fiebre leve",
-      "Conjuntivitis",
-      "Dolor en articulaciones",
+      {
+        titulo: null,
+        items: [
+          "Fiebre moderada o febrícula",
+          "Conjuntivitis no purulenta (ojos rojos sin secreción)",
+          "Erupción cutánea maculopapular (manchas rojas en la piel) que suele comenzar en la cara y extenderse",
+          "Dolores articulares leves o moderados (manos y pies) y dolores musculares",
+        ],
+      },
+    ],
+    prevencion: [
+      "Control del vector: mismas medidas de control contra el mosquito Aedes aegypti.",
+      "Uso de preservativo: especialmente durante el embarazo o si se reside o viaja a zonas con brotes activos de Zika.",
+      "Postergación de viajes: mujeres embarazadas deberían evitar zonas endémicas.",
+    ],
+    queHacer: [
+      "Consulta médica para confirmación y seguimiento epidemiológico.",
+      "Reposo y consumo abundante de líquidos.",
+      "Tratamiento sintomático con paracetamol para la fiebre y el dolor (evitar AINES hasta descartar dengue).",
+      "Evitar la picadura de mosquitos durante la primera semana para no continuar el ciclo de transmisión local.",
     ],
   },
   {
@@ -45,13 +111,42 @@ export const diseaseInfo = [
     nombre: "Chikungunya",
     color: "#00b5b8",
     icono: "bi-bandaid",
-    descripcion:
-      "Provoca fuertes dolores articulares que pueden persistir por semanas o meses.",
+    agenteCausal: "Virus Chikungunya (género Alphavirus, familia Togaviridae)",
+    vectorPrincipal: "Aedes aegypti y Aedes albopictus",
+    sintomaDistintivo:
+      "Dolor articular severo e incapacitante, bilateral y simétrico",
+    queEs:
+      'Enfermedad vírica causada por el virus Chikungunya (género Alphavirus, familia Togaviridae). La palabra significa "aquel que se encorva" en idioma Makonde, en referencia a la postura encorvada que adoptan los enfermos por el dolor articular extremo.',
+    contagio: [
+      "Transmitida exclusivamente por la picadura de mosquitos Aedes aegypti y Aedes albopictus infectados. No hay transmisión directa de persona a persona.",
+    ],
+    sintomasIntro: null,
     sintomas: [
-      "Fiebre elevada",
-      "Dolor articular intenso",
-      "Hinchazón en articulaciones",
-      "Dolor de cabeza",
+      {
+        titulo: null,
+        items: [
+          "Inicio abrupto: fiebre alta súbita",
+          "Dolor articular severo e incapacitante: afecta principalmente manos, muñecas, tobillos y pies, de forma bilateral y simétrica",
+          "Otros síntomas: erupción cutánea, dolor muscular, dolor de cabeza, náuseas, fatiga",
+        ],
+      },
+      {
+        titulo: "Fase crónica",
+        items: [
+          "En un porcentaje significativo de pacientes, los dolores articulares pueden persistir durante meses o años.",
+        ],
+      },
+    ],
+    prevencion: [
+      "Eliminación de criaderos de mosquitos en el entorno urbano y doméstico.",
+      "Uso sistemático de repelentes, tules o mosquiteros.",
+      "Evitar la exposición en las horas de mayor actividad del mosquito (primeras horas de la mañana y atardecer).",
+    ],
+    queHacer: [
+      "Consultar a un médico para el diagnóstico diferencial.",
+      "Hidratación adecuada y reposo prolongado.",
+      "Manejo sintomático de la fiebre con paracetamol en la fase aguda.",
+      "Para la inflamación articular persistente, el médico evaluará analgésicos o antiinflamatorios una vez descartado el riesgo de dengue hemorrágico.",
     ],
   },
   {
@@ -59,13 +154,50 @@ export const diseaseInfo = [
     nombre: "Malaria",
     color: "#00b5b8",
     icono: "bi-thermometer-half",
-    descripcion:
-      "Causada por un parásito transmitido por el mosquito Anopheles, requiere atención médica urgente.",
+    agenteCausal: "Parásitos del género Plasmodium",
+    vectorPrincipal: "Anopheles",
+    sintomaDistintivo:
+      "Paroxismo palúdico (escalofríos, fiebre y sudoración cíclicos)",
+    queEs:
+      "A diferencia del Dengue, Zika y Chikungunya (que son causados por virus), la malaria es una enfermedad parasitaria potencialmente mortal causada por protozoos del género Plasmodium (P. falciparum, P. vivax, P. malariae, P. ovale y P. knowlesi). P. falciparum es la especie más letal.",
+    contagio: [
+      "Picadura de mosquito: transmitida por las hembras del mosquito del género Anopheles, que pican principalmente entre el anochecer y el amanecer.",
+      "Vías secundarias: transfusiones de sangre, agujas contaminadas o transmisión congénita de la madre al feto.",
+    ],
+    sintomasIntro: "Aparecen entre 10 y 15 días después de la picadura.",
     sintomas: [
-      "Escalofríos",
-      "Fiebre cíclica",
-      "Sudoración intensa",
-      "Fatiga extrema",
+      {
+        titulo: "Paroxismo palúdico",
+        items: [
+          "Accesos característicos de escalofríos intensos con temblores, seguidos de fiebre alta y, finalmente, sudoración profusa con caída de la temperatura.",
+        ],
+      },
+      {
+        titulo: "Síntomas generales",
+        items: [
+          "Dolor de cabeza",
+          "Vómitos",
+          "Dolor muscular",
+          "Anemia (por destrucción de glóbulos rojos)",
+          "Ictericia (coloración amarillenta en piel y ojos)",
+        ],
+      },
+      {
+        titulo: "Malaria grave",
+        items: [
+          "Si no se trata, P. falciparum puede causar insuficiencia renal, convulsiones, coma (malaria cerebral) y la muerte.",
+        ],
+      },
+    ],
+    prevencion: [
+      "Control del vector: uso de mosquiteros de cama impregnados con insecticida de larga duración (MILD) y fumigación de interiores.",
+      "Quimioprofilaxis: medicamentos antipalúdicos tomados antes, durante y después de viajar a regiones endémicas.",
+      "Vacunación: aplicación de vacunas antipalúdicas (como RTS,S/AS01 o R21/Matrix-M), dirigidas principalmente a niños en zonas de alta transmisión endémica.",
+    ],
+    queHacer: [
+      "Buscar atención médica urgente: la malaria por P. falciparum es una emergencia médica.",
+      "Tratamiento antiparasitario específico: administración inmediata de medicamentos antipalúdicos prescritos por un médico (como terapias combinadas basadas en la artemisinina - TCA). No existen remedios caseros para curar la malaria.",
+      "Monitoreo hospitalario: en casos graves se requiere hospitalización e hidratación intravenosa.",
     ],
   },
 ];
