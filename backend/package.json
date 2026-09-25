@@ -18,5 +18,7 @@
     "jsonwebtoken": "^9.0.3",
     "mysql2": "^3.24.4",
     "sequelize": "^6.37.8"
-  }
+  },
+  "author": "",
+  "license": "ISC"
 }
