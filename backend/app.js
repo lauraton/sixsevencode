@@ -8,8 +8,6 @@ import { authRoutes } from "./src/routes/auth.route.js"
 const port = 6767;
 const app = express();
 
-app.use("/api", userRoutes)
-app.use("/api", profileRouter);
 
 app.listen(port, async () => {
     await startDB();
@@ -17,4 +15,7 @@ app.listen(port, async () => {
 })
 
 app.use(express.json());
+app.use(cookieParser());
 app.use(userRoutes)
+app.use(authRoutes)
+app.use("/api", profileRouter);

@@ -9,5 +9,3 @@ export const profileRouter = Router();
 profileRouter.post("/profile", authMiddleware, createProfileValidation, validate, createProfile)
 profileRouter.get("/profile", authMiddleware, getProfile);
 profileRouter.put("/profile", authMiddleware, updateProfileValidation, validate, updateProfile)
-
-export default profileRouter;

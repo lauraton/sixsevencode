@@ -5,7 +5,7 @@ import { UserModel } from "../models/user.model.js";
 
 export const register = async (req, res) => {
     try {
-        const { nombre, apellido, email, password, barrio } = matchedData(req, { locations: ['body'] })
+        const { name, lastname, email, password, neighborhood } = matchedData(req, { locations: ['body'] })
 
         const hashedPassword = await hashPassword(password)
 
