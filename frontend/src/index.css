@@ -5,17 +5,16 @@
   --color-primary-rgb: 0, 181, 184;
   --color-primary-hover: #008a8c;
   --color-primary-dark: #006e70;
+  --color-primary-soft: #e3f7f8;
   --color-secondary: #ffffff;
   --color-text: #1e293b;
-  --color-bg-light: #e6f7f8;
-  --color-border: #cdeef0;
+  --color-muted: #64748b;
+  --color-bg-light: #eafcfd;
+  --color-border: #e7edef;
+  --color-highlight: #f5a524;
 
-  --glass-bg: rgba(255, 255, 255, 0.22);
-  --glass-bg-strong: rgba(255, 255, 255, 0.55);
-  --glass-bg-primary: rgba(0, 181, 184, 0.16);
-  --glass-border: rgba(255, 255, 255, 0.45);
-  --glass-blur: 18px;
-  --shadow-glass: 0 8px 32px rgba(0, 90, 92, 0.16);
+  --shadow-card: 0 10px 30px rgba(15, 23, 42, 0.07);
+  --shadow-card-lg: 0 16px 40px rgba(15, 23, 42, 0.1);
 
   color-scheme: light;
   color: var(--color-text);
@@ -27,15 +26,7 @@
 body {
   margin: 0;
   color: var(--color-text);
-  background:
-    radial-gradient(circle at 15% 0%, rgba(0, 181, 184, 0.25), transparent 45%),
-    radial-gradient(
-      circle at 90% 10%,
-      rgba(0, 181, 184, 0.18),
-      transparent 40%
-    ),
-    linear-gradient(160deg, #eafcfd 0%, #cdf1f2 45%, #8fdfe2 100%);
-  background-attachment: fixed;
+  background: linear-gradient(180deg, var(--color-bg-light) 0%, #ffffff 420px);
   min-height: 100svh;
 }
 
@@ -57,57 +48,73 @@ h5,
 h6 {
   font-family: "Inter", system-ui, sans-serif;
   font-weight: 700;
+  color: var(--color-text);
 }
 
-/* ---------- Glassmorphism ---------- */
-.glass-panel {
-  background: var(--glass-bg);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
-  border: 1px solid var(--glass-border);
-  border-radius: 20px;
-  box-shadow: var(--shadow-glass);
+/* ---------- Header ---------- */
+.app-header {
+  background: #ffffff;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.brand-mark {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: var(--color-primary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.brand-text-name {
+  font-weight: 800;
+  font-size: 1.2rem;
+  line-height: 1.1;
+  color: var(--color-text);
+  letter-spacing: -0.01em;
+}
+
+.brand-text-sub {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--color-muted);
+  text-transform: uppercase;
+}
+
+/* ---------- Tarjetas planas ---------- */
+.glass-panel,
+.glass-panel-strong,
+.card {
+  background: #ffffff;
+  border: 1px solid var(--color-border);
+  border-radius: 18px;
+  box-shadow: var(--shadow-card);
 }
 
 .glass-panel-strong {
-  background: var(--glass-bg-strong);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--shadow-glass);
-}
-
-.card {
-  background: var(--glass-bg);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
-  border: 1px solid var(--glass-border);
-  border-radius: 18px;
-  box-shadow: var(--shadow-glass);
+  box-shadow: var(--shadow-card-lg);
 }
 
 .modal-content {
-  background: var(--glass-bg-strong);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
-  border: 1px solid var(--glass-border);
+  background: #ffffff;
+  border: 1px solid var(--color-border);
   border-radius: 20px;
+  box-shadow: var(--shadow-card-lg);
 }
 
 .dropdown-menu {
-  background: var(--glass-bg-strong);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
-  border: 1px solid var(--glass-border);
-  border-radius: 16px;
-  box-shadow: var(--shadow-glass);
+  background: #ffffff;
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  box-shadow: var(--shadow-card-lg);
 }
 
 .offcanvas {
-  background: var(--glass-bg-strong);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
-  border-right: 1px solid var(--glass-border);
+  background: #ffffff;
+  border-right: 1px solid var(--color-border);
 }
 
 /* ---------- Botones de marca (sin colores default de Bootstrap) ---------- */
@@ -119,8 +126,7 @@ h6 {
   font-weight: 600;
   transition:
     background-color 0.2s,
-    border-color 0.2s,
-    transform 0.15s;
+    border-color 0.2s;
 }
 .btn-brand:hover,
 .btn-brand:focus {
@@ -138,7 +144,7 @@ h6 {
 }
 .btn-brand-outline:hover,
 .btn-brand-outline:focus {
-  background: var(--glass-bg-primary);
+  background: var(--color-primary-soft);
   color: var(--color-primary-dark);
   border-color: var(--color-primary);
 }
@@ -157,23 +163,24 @@ h6 {
   color: #fff;
 }
 
-.btn-brand-ghost {
+/* Botón secundario neutro (ej. CTA secundaria del hero) */
+.btn-neutral {
   background: #ffffff;
-  border: none;
+  border: 1px solid var(--color-border);
   color: var(--color-text);
   border-radius: 999px;
-  font-weight: 700;
-  box-shadow: 0 6px 18px rgba(0, 40, 41, 0.18);
+  font-weight: 600;
 }
-.btn-brand-ghost:hover,
-.btn-brand-ghost:focus {
-  background: #f2fefe;
+.btn-neutral:hover,
+.btn-neutral:focus {
+  background: #f8fafb;
   color: var(--color-text);
+  border-color: #d7dfe2;
 }
 
 /* ---------- Badges de estado (sin verde/rojo/naranja/gris) ---------- */
 .badge-state-pending {
-  background: transparent;
+  background: var(--color-primary-soft);
   border: 1px solid var(--color-primary);
   color: var(--color-primary-dark);
   font-weight: 600;
@@ -189,27 +196,54 @@ h6 {
   font-weight: 600;
 }
 .badge-state-draft {
-  background: rgba(30, 41, 59, 0.08);
+  background: #f1f5f6;
   color: var(--color-text);
   border: 1px dashed var(--color-border);
   font-weight: 600;
 }
 .badge-brand {
-  background: var(--glass-bg-primary);
+  background: var(--color-primary-soft);
   color: var(--color-primary-dark);
   border: 1px solid var(--color-primary);
   font-weight: 600;
 }
 
+/* Etiqueta de acento (uso puntual decorativo, no botones) */
+.badge-highlight {
+  background: var(--color-highlight);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.68rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border-radius: 999px;
+  box-shadow: 0 6px 16px rgba(245, 165, 36, 0.35);
+}
+
+.eyebrow-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--color-primary-soft);
+  color: var(--color-primary-dark);
+  font-weight: 700;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border-radius: 999px;
+}
+
 /* ---------- Alertas de marca ---------- */
 .alert-brand {
-  background: var(--glass-bg-primary);
+  background: var(--color-primary-soft);
   border: 1px solid var(--color-primary);
   color: var(--color-text);
   border-radius: 14px;
 }
 .alert-brand-dark {
-  background: rgba(0, 110, 112, 0.12);
+  background: rgba(0, 110, 112, 0.08);
   border: 1px solid var(--color-primary-dark);
   color: var(--color-text);
   border-radius: 14px;
@@ -224,7 +258,7 @@ h6 {
 }
 
 .progress {
-  background-color: rgba(255, 255, 255, 0.4);
+  background-color: var(--color-primary-soft);
 }
 
 .progress-bar {
@@ -239,15 +273,15 @@ h6 {
 
 .form-control,
 .form-select {
-  background-color: rgba(255, 255, 255, 0.6);
-  border: 1px solid var(--glass-border);
+  background-color: #ffffff;
+  border: 1px solid var(--color-border);
 }
 
 .form-control:focus,
 .form-select:focus {
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 0.2rem rgba(var(--color-primary-rgb), 0.25);
-  background-color: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 0 0 0.2rem rgba(var(--color-primary-rgb), 0.18);
+  background-color: #ffffff;
 }
 
 .form-check-input:checked {
@@ -258,18 +292,7 @@ h6 {
 .empty-state {
   text-align: center;
   padding: 40px 16px;
-  color: #476065;
-}
-
-.brand-logo {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-weight: 800;
-  font-size: 1.35rem;
-  letter-spacing: -0.02em;
-  color: #fff;
-  text-decoration: none;
+  color: var(--color-muted);
 }
 
 .like-btn {
@@ -285,8 +308,16 @@ h6 {
   color: var(--color-primary-dark);
 }
 
-@media (max-width: 991.98px) {
-  body {
-    padding-bottom: 0;
-  }
+/* Popover simple de sesión (login/registro) */
+.session-popover {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 1050;
+  min-width: 240px;
+  background: #ffffff;
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  box-shadow: var(--shadow-card-lg);
+  padding: 16px;
 }
