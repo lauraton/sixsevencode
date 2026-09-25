@@ -36,10 +36,7 @@ export const createUserValidations = [
         .optional()
         .isIn(['CIUDADANO', 'MUNICIPIO', 'ADMIN'])
         .withMessage("El rol debe ser 'CIUDADANO', 'MUNICIPIO' o 'ADMIN'"),
-    body('neighborhood')
-        .optional()
-        .isLength({ min: 2, max: 100 })
-        .withMessage('El barrio debe tener entre 2 y 100 caracteres')
+    barrioIdValidation(true)
 ]
 
 export const updateUserValidations = [

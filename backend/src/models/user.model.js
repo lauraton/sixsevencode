@@ -25,11 +25,7 @@ export const UserModel = sequelize.define("User", {
         allowNull: false,
         defaultValue: "CIUDADANO"
     },
-    neighborhood: {
-        type: DataTypes.STRING(100),
-        allowNull: true
-    },
-        neighborhood_id: {
+    barrio_id: {
         type: DataTypes.INTEGER,
         allowNull: true,
         references: {
@@ -37,6 +33,7 @@ export const UserModel = sequelize.define("User", {
             key: "id"
         }
     }
+    
 }, {
     paranoid: true
 })
