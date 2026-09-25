@@ -5,6 +5,7 @@ import { userRoutes } from "./src/routes/user.route.js";
 import { profileRouter } from "./src/routes/profile.route.js"
 import { authRoutes } from "./src/routes/auth.route.js"
 import { barrioRoutes } from "./src/routes/neighborhood.route.js";
+import { seedNeighborhoods } from "./src/config/seed.js";
 
 const port = 6767;
 const app = express();
@@ -18,6 +19,7 @@ app.use("/api", profileRouter);
 
 app.listen(port, async () => {
     await startDB();
+    await seedNeighborhoods();
     console.log("Servidor ejecutándose en el puerto",port)
 })
 
