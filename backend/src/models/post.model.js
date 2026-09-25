@@ -1,7 +1,8 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../config/database.js";
+import { UserModel } from "./user.model.js";
+import { CommentModel } from "./comment.model.js";
 
-// ✅ Debe decir "export const PostModel"
 export const PostModel = sequelize.define("Post", {
   titulo: {
     type: DataTypes.STRING(100),
@@ -26,3 +27,13 @@ export const PostModel = sequelize.define("Post", {
 }, {
   paranoid: true
 });
+
+// Asociaciones
+UserModel.hasMany(PostModel, { foreignKey: "user_id" });
+PostModel.belongsTo(UserModel, { foreignKey: "user_id" });
+
+PostModel.hasMany(CommentModel, { foreignKey: "post_id" });
+CommentModel.belongsTo(PostModel, { foreignKey: "post_id" });
+
+UserModel.hasMany(CommentModel, { foreignKey: "user_id" });
+CommentModel.belongsTo(UserModel, { foreignKey: "user_id" });

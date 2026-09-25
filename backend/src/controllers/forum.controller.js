@@ -37,14 +37,12 @@ export const getPosts = async (req, res) => {
       whereCondition.barrio = barrio;
     }
 
-    // Consulta con Sequelize
     const posts = await PostModel.findAll({
       where: whereCondition,
-      // Si te da error, comenta temporalmente la propiedad 'include' para probar
       include: [
         {
           model: UserModel,
-          attributes: ['idUser', 'nombre', 'email'] // ajusta los nombres según tu modelo User
+          attributes: ['id', 'name', 'email']   // ✅ nombres reales del modelo
         },
         {
           model: CommentModel,
@@ -56,10 +54,10 @@ export const getPosts = async (req, res) => {
 
     return res.status(200).json(posts);
   } catch (error) {
-    console.error("Error exacto en getPosts:", error); // Muestra el detalle real en la terminal
+    console.error("Error exacto en getPosts:", error);
     return res.status(500).json({ 
       message: "Error al obtener las publicaciones",
-      errorDetail: error.message // Agregamos esto temporalmente para verlo en Postman
+      errorDetail: error.message
     });
   }
 };
