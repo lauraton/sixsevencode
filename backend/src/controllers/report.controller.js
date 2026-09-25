@@ -20,7 +20,7 @@ export const createReport = async (req, res) => {
 export const getReports = async (req, res) => {
   try {
     const reports = await ReportModel.findAll({
-      include: [{ model: UserModel, as: "reportante", attributes: ["nombre", "apellido", "email", "barrio"] }],
+      include: [{ model: UserModel, as: "reportante", attributes: ["name", "lastname", "email", "neighborhood"] }],
       order: [["createdAt", "DESC"]],
     });
     return res.status(200).json(reports);
@@ -35,7 +35,7 @@ export const getReportById = async (req, res) => {
   try {
     const { id } = req.params;
     const report = await ReportModel.findByPk(id, {
-      include: [{ model: UserModel, as: "reportante", attributes: ["nombre", "apellido", "email", "barrio"] }],
+      include: [{ model: UserModel, as: "reportante", attributes: ["name", "lastname", "email", "neighborhood"] }],
     });
 
     if (!report) {
